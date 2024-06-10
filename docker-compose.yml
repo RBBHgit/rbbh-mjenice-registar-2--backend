@@ -1,0 +1,38 @@
+version: '3.4'
+
+networks:
+  mjenicenetwork:
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: sqlserver2
+    environment:
+      SA_PASSWORD: StrongPassword17!?
+      ACCEPT_EULA: Y
+    ports:
+      - "1434:1433"
+    networks:
+      - mjenicenetwork
+  #  volumes:
+  #    - sql-data:/var/opt/mssql
+
+  web:
+    container_name: web-api
+    image: ${DOCKER_REGISTRY-}web
+    build:
+      context: .
+      dockerfile: Raiffeisen.RegistarMjenicaBackend/Dockerfile
+    depends_on:
+      - sqlserver
+    environment:
+      - ConnectionString=Server=sqlserver,1400;Database=sqlserver;User=sa;Password=StrongPassword17!?;Encrypt=True;TrustServerCertificate=True;
+    ports:
+      - "8001:80"
+    networks:
+      - mjenicenetwork
+
+
+
+volumes:
+  sql-data:
