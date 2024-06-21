@@ -22,7 +22,7 @@ services:
     image: ${DOCKER_REGISTRY-}web
     build:
       context: .
-      dockerfile: Raiffeisen.RegistarMjenicaBackend/Dockerfile
+      dockerfile: Raiffeisen.RegistarMjenica.Api/Dockerfile
     depends_on:
       - sqlserver
     environment:
