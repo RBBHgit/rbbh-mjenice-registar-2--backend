@@ -28,39 +28,20 @@ public class Mjenica : BaseAuditableEntity
     /// </summary>
     [Column("GroupNumber", Order = 8)]
     public string? GroupNumber { get; set; }
-
-    /// <summary>
-    ///     Unique identifier of the person that created Mjenica for the first time.
-    ///     It's populated in the case Mjenica create and update
-    ///     as long as it's not verified
-    /// </summary>
+    
 
     [Column("CreatedBy", Order = 9)]
     public string? CreatedBy { get; set; }
-
-
-    /// <summary>
-    ///     Date of the Mjenica creation and update, if not verified
-    /// </summary>
+    
     [Column("CreatedDate", Order = 10)]
     public DateTime? CreatedDate { get; set; }
-
-    /// <summary>
-    ///     Indicates if clients Mjenica is verified
-    /// </summary>
+    
     [Column("IsCreatedVerified", Order = 11)]
     public bool? IsCreatedVerified { get; set; }
-
-    /// <summary>
-    ///     Unique identifier of the person that verified Mjenica.
-    ///     Not the same value as CreatedBy.
-    /// </summary>
+    
     [Column("CreationVerifiedBy", Order = 12)]
     public string? CreationVerifiedBy { get; set; }
-
-    /// <summary>
-    ///     Date when Mjenica was verifid
-    /// </summary>
+    
 
     [Column("CreationVerifiedDate", Order = 13)]
     public DateTime? CreationVerifiedDate { get; set; }

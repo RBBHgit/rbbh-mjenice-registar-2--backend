@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Migrations\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="EPPlus" Version="7.0.5"/>
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.31"/>
@@ -37,7 +33,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Raiffeisen.RegistarMjenica.DataAccess\Raiffeisen.RegistarMjenica.DataAccess.csproj" />
+        <ProjectReference Include="..\Raiffeisen.RegistarMjenica.DataAccess\Raiffeisen.RegistarMjenica.DataAccess.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="AppConfigs\" />
     </ItemGroup>
 
 </Project>

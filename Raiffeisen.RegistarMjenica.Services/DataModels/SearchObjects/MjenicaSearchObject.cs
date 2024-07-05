@@ -2,13 +2,13 @@ namespace Raiffeisen.RegistarMjenica.Api.Services.DataModels.SearchObjects;
 
 public class MjenicaSearchObject : BaseSearchObject
 {
-    public string ClientMjenicaSerialNumber { get; set; }
-    public string GuarantorMjenicaSerialNumber { get; set; }
-    public string ClientName { get; set; }
-    public string JMBG { get; set; }
-    public string ContractNumber { get; set; }
-    public string ContractStatus { get; set; }
-    public string GroupNumber { get; set; }
+    public string? ClientMjenicaSerialNumber { get; set; }
+    public string? GuarantorMjenicaSerialNumber { get; set; }
+    public string? ClientName { get; set; }
+    public string? JMBG { get; set; }
+    public string? ContractNumber { get; set; }
+    public string? ContractStatus { get; set; }
+    public string? GroupNumber { get; set; }
     public DateTime? ContractDateStart { get; set; }
     public DateTime? ContractDateEnd { get; set; }
     public DateTime? CreatedDateStart { get; set; }

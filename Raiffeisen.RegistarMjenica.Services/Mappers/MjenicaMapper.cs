@@ -79,19 +79,19 @@ public static class MjenicaMapper
     public static List<MjenicaGridModel> MapFromEntityList(IEnumerable<Mjenica> entityList)
     {
         return entityList.Select(item => new MjenicaGridModel
-        {
-            Id = item.Id.ToString(),
-            ClientMjenicaSerialNumber = item.ClientMjenicaSerialNumber,
-            GuarantorMjenicaSerialNumber = item.GuarantorMjenicaSerialNumber,
-            JMBG = item.JMBG,
-            ClientName = item.ClientName,
-            ContractDate = item.ContractDate,
-            ContractStatus = item.ContractStatus,
-            ContractNumber = item.ContractNumber,
-            CreatedDate = item.CreatedDate,
-            IsCreatedVerified = item.IsCreatedVerified ?? false,
-            GroupNumber = item.GroupNumber
-        })
+            {
+                Id = item.Id.ToString(),
+                ClientMjenicaSerialNumber = item.ClientMjenicaSerialNumber,
+                GuarantorMjenicaSerialNumber = item.GuarantorMjenicaSerialNumber,
+                JMBG = item.JMBG,
+                ClientName = item.ClientName,
+                ContractDate = item.ContractDate,
+                ContractStatus = item.ContractStatus,
+                ContractNumber = item.ContractNumber,
+                CreatedDate = item.CreatedDate,
+                IsCreatedVerified = item.IsCreatedVerified ?? false,
+                GroupNumber = item.GroupNumber
+            })
             .ToList();
     }
 }

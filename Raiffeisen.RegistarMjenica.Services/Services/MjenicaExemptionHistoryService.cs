@@ -1,4 +1,5 @@
 using DataAccess.Entities;
+using DataAccess.Responses;
 using Microsoft.EntityFrameworkCore;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels.SearchObjects;
@@ -33,15 +34,28 @@ public class MjenicaExemptionHistoryService : IMjenicaExemptionHistoryService
         }
     }
 
-    public async Task<List<MjenicaHistoryGridModel>> Get(MjenicaHistorySearchObject search)
+    public async Task<PagedResponse<MjenicaHistoryGridModel>> Get(MjenicaHistorySearchObject search)
     {
         try
         {
-            IEnumerable<MjenicaExemptionHistory> result = null;
+            var result = await _mjenicaHistoryRepository.Get(search);
 
-            result = await _mjenicaHistoryRepository.Get(search);
-            if (result is null || !result.Any()) return new List<MjenicaHistoryGridModel>();
-            return MjenicaExemptionHistoryMapper.MapFromEntityList(result);
+            if (result == null || !result.Data.Any())
+            {
+                return new PagedResponse<MjenicaHistoryGridModel>()
+                {
+                    Data = new List<MjenicaHistoryGridModel>(),
+                    TotalCount = 0
+                };
+            }
+
+            var mappedResult = MjenicaExemptionHistoryMapper.MapFromEntityList(result.Data);
+
+            return new PagedResponse<MjenicaHistoryGridModel>
+            {
+                Data = mappedResult,
+                TotalCount = result.TotalCount
+            };
         }
         catch (Exception ex)
         {

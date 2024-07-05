@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using DataAccess.Common.Interfaces;
+using DataAccess.Responses;
 
 namespace DataAccess.Interfaces.Repositories;
 
@@ -13,7 +14,7 @@ public interface IGenericRepository<T, TSearch> where T : class, IEntity where T
     Task DeleteAsync(T entity);
     Task<int> AddBatchAsync(List<T> entities);
     Task<int> UpdateBatchAsync(List<T> entities);
-    Task<IEnumerable<T>> Get(TSearch search = null);
+    Task<PagedResponse<T>> Get(TSearch search = null);
     Task<T> GetSingleAsync(TSearch search = null);
 
     #region transactions

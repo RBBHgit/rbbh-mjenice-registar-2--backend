@@ -1,6 +1,8 @@
+using System.Linq.Dynamic.Core;
 using DataAccess.Entities;
 using DataAccess.Enums;
 using DataAccess.Interfaces.Repositories;
+using DataAccess.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels.SearchObjects;
@@ -125,16 +127,28 @@ public class MjenicaService : IMjenicaService
         }
     }
 
-    public async Task<List<MjenicaGridModel>> GetGridAsync(MjenicaSearchObject mjenicaSearch = default)
+    public async Task<PagedResponse<MjenicaGridModel>> GetGridAsync(MjenicaSearchObject mjenicaSearch = default)
     {
         try
         {
             var result = await _mjenicaRepository.Get(mjenicaSearch);
 
-            if (result is null)
-                return new List<MjenicaGridModel>();
+            if (result == null || !result.Data.Any())
+            {
+                return new PagedResponse<MjenicaGridModel>
+                {
+                    Data = new List<MjenicaGridModel>(),
+                    TotalCount = 0
+                };
+            }
 
-            return MjenicaMapper.MapFromEntityList(result);
+            var mappedResult = MjenicaMapper.MapFromEntityList(result.Data);
+
+            return new PagedResponse<MjenicaGridModel>
+            {
+                Data = mappedResult,
+                TotalCount = result.TotalCount
+            };
         }
         catch (Exception ex)
         {
@@ -142,6 +156,7 @@ public class MjenicaService : IMjenicaService
             throw;
         }
     }
+
 
     public async Task<MjenicaModel> ExemptMjenicaTransactionAsync(MjenicaModel model, string username)
     {

@@ -10,7 +10,6 @@ namespace Raiffeisen.RegistarMjenica.Api.Services.Repositories;
 public class MjenicaRepository : GenericRepository<Mjenica, MjenicaSearchObject>, IMjenicaRepository
 {
     private readonly IGenericRepository<Mjenica, MjenicaSearchObject> _repository;
-    //private readonly IGenericRepository<MjenicaExemptionHistory, MjenicaHistorySearchObject> _historyRepository;
 
     public MjenicaRepository(IGenericRepository<Mjenica, MjenicaSearchObject> repository,
         ApplicationDbContext dbContext) : base(dbContext)

@@ -24,7 +24,6 @@ public class CustomExceptionHandlingMiddleware
         catch (CustomDataAccessException ex)
         {
             var logId = 0;
-            //dodati servis za logiranje i zalogirati stacktrace, logid..
 
             var problemDetails = new CustomProblemDetails
             {
@@ -42,16 +41,14 @@ public class CustomExceptionHandlingMiddleware
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-
-            // Create a ProblemDetails instance for the error response
+            
             var problemDetails = new CustomProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "An unexpected error occurred.",
                 Detail = ex.Message
             };
-
-            // Serialize the ProblemDetails to JSON and write it to the response
+            
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problemDetails);

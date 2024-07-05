@@ -28,14 +28,12 @@ public class ImportService : IImportService
         _logger = logger;
     }
 
-    public async Task<int> ImportFromExcel(IBrowserFile file)
+    public async Task<int> ImportFromExcel(Stream fileStream)
     {
         try
         {
-            var data = await ReadFromFile(file);
-
+            var data = await ReadFromFile(fileStream);
             var rowsCount = await _mjenicaService.CreateBatchAsync(data);
-
             return rowsCount;
         }
         catch (Exception ex)
@@ -45,22 +43,17 @@ public class ImportService : IImportService
         }
     }
 
-    private async Task<List<MjenicaModel>> ReadFromFile(IBrowserFile file)
+    private async Task<List<MjenicaModel>> ReadFromFile(Stream fileStream)
     {
-        var stream = await ConvertToSeekableStream(file);
-
         var data = new List<MjenicaModel>();
 
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-
-        using var package = new ExcelPackage(stream);
+        using var package = new ExcelPackage(fileStream);
         var worksheet = package.Workbook.Worksheets[0];
 
         for (var row = 2; row <= worksheet.Dimension.Rows; row++)
         {
             var mjenica = new MjenicaModel();
-
             for (var col = 1; col <= worksheet.Dimension.Columns; col++)
             {
                 var columnName = worksheet.Cells[1, col].Text;
@@ -77,15 +70,6 @@ public class ImportService : IImportService
         }
 
         return data;
-    }
-
-    private async Task<Stream> ConvertToSeekableStream(IBrowserFile file)
-    {
-        await using var nonSeekableStream = file.OpenReadStream();
-        var seekableStream = new MemoryStream();
-        await nonSeekableStream.CopyToAsync(seekableStream);
-        seekableStream.Seek(0, SeekOrigin.Begin);
-        return seekableStream;
     }
 
     private void MapCellValueToProperty(MjenicaModel obj, string columnName, string cellValue)

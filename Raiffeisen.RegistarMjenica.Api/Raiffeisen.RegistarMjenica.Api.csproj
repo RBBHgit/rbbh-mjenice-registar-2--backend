@@ -22,12 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Services\"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Raiffeisen.RegistarMjenica.DataAccess\Raiffeisen.RegistarMjenica.DataAccess.csproj" />
-        <ProjectReference Include="..\Raiffeisen.RegistarMjenica.Services\Raiffeisen.RegistarMjenica.Services.csproj" />
+        <ProjectReference Include="..\Raiffeisen.RegistarMjenica.DataAccess\Raiffeisen.RegistarMjenica.DataAccess.csproj"/>
+        <ProjectReference Include="..\Raiffeisen.RegistarMjenica.Services\Raiffeisen.RegistarMjenica.Services.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

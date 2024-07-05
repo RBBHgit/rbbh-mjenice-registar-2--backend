@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using DataAccess.Common;
 using DataAccess.Interfaces.Repositories;
+using DataAccess.Responses;
 using Microsoft.EntityFrameworkCore;
 using Raiffeisen.RegistarMjenica.Services.Contexts;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels.SearchObjects;
@@ -80,32 +81,35 @@ public class GenericRepository<T, TSearch> : IGenericRepository<T, TSearch>
         return await _dbContext.SaveChangesAsync();
     }
 
-    public virtual async Task<IEnumerable<T>> Get(TSearch search = null)
+    public virtual async Task<PagedResponse<T>> Get(TSearch search = null)
     {
         var entity = _dbContext.Set<T>().AsQueryable();
 
         entity = AddFilter(entity, search);
-
         entity = ApplySort(entity, search);
-
         entity = AddInclude(entity, search);
 
-        if (search?.IsDistinct.HasValue == true && search?.IsDistinct.Value == true) entity = entity.Distinct();
+        if (search?.IsDistinct.HasValue == true && search?.IsDistinct.Value == true)
+        {
+            entity = entity.Distinct();
+        }
 
-        if (search.Page == 0) search.TotalRecord = entity.Count();
+        int totalCount = await entity.CountAsync();
 
         if (search?.Skip.HasValue == true && search?.Take.HasValue == true && search.PageSize != 0)
         {
-            search.TotalRecord = entity.Count();
-
             entity = entity.Skip(search.Skip.Value).Take(search.Take.Value);
         }
 
-        var list = await entity?.ToListAsync();
+        var list = await entity.ToListAsync();
 
-        if (list is null) return new List<T>();
-        return list;
+        return new PagedResponse<T>
+        {
+            Data = list,
+            TotalCount = totalCount
+        };
     }
+
 
     public virtual async Task<T> GetSingleAsync(TSearch search = null)
     {

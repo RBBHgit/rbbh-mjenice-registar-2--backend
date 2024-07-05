@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Raiffeisen.RegistarMjenica.Api.Helpers;
 using Raiffeisen.RegistarMjenica.Api.Models;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels;
+using Raiffeisen.RegistarMjenica.Api.Services.DataModels.SearchObjects;
+using Raiffeisen.RegistarMjenica.Api.Services.Exceptions;
 using Raiffeisen.RegistarMjenica.Api.Services.Interfaces;
 
 namespace Raiffeisen.RegistarMjenica.Api.Controllers;
@@ -12,12 +15,14 @@ public class MjenicaController : ControllerBase
 {
     private readonly IMjenicaJobService _mjenicaJobService;
     private readonly IMjenicaService _mjenicaService;
+    private readonly IRfLogger _logger;
 
 
-    public MjenicaController(IMjenicaJobService mjenicaJobService, IMjenicaService mjenicaService)
+    public MjenicaController(IMjenicaJobService mjenicaJobService, IMjenicaService mjenicaService, IRfLogger logger)
     {
         _mjenicaJobService = mjenicaJobService;
         _mjenicaService = mjenicaService;
+        _logger = logger;
     }
 
     [HttpPost("UpdateContractStatusBatch")]
@@ -34,13 +39,13 @@ public class MjenicaController : ControllerBase
     {
         try
         {
-           
             var result = await _mjenicaService.GetByIdAsync(id, false, true);
 
             return Ok(result);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occured while fetching mjenica");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
@@ -55,6 +60,7 @@ public class MjenicaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occured while creating mjenica");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
@@ -64,11 +70,13 @@ public class MjenicaController : ControllerBase
     {
         try
         {
-            var result = await _mjenicaService.VerifyMjenicaAsync(mjenicaApiRequest.Mjenica, mjenicaApiRequest.LoggedInUser);
+            var result =
+                await _mjenicaService.VerifyMjenicaAsync(mjenicaApiRequest.Mjenica, mjenicaApiRequest.LoggedInUser);
             return Ok(result);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occured while verifying mjenica");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
@@ -83,6 +91,7 @@ public class MjenicaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occured while updating mjenica");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
@@ -99,6 +108,7 @@ public class MjenicaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occurred while processing the mjenica exemption transaction");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
@@ -115,6 +125,7 @@ public class MjenicaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occured while verifying exemption");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
@@ -122,8 +133,6 @@ public class MjenicaController : ControllerBase
     [HttpGet("GetClientMjenice")]
     public async Task<IActionResult> GetClientMjenice([FromQuery] string id)
     {
-        if (string.IsNullOrEmpty(id)) return BadRequest("Invalid request payload.");
-
         try
         {
             var result = await _mjenicaService.GetClientMjeniceAsync(id);
@@ -131,6 +140,22 @@ public class MjenicaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occured while getting client mjenice");
+            return StatusCode(500, "Internal server error: " + ex.Message);
+        }
+    }
+
+    [HttpGet("ApplyFilter")]
+    public async Task<IActionResult> ApplyFilter([FromQuery] MjenicaSearchObject searchObject)
+    {
+        try
+        {
+            var result = await _mjenicaService.GetGridAsync(searchObject);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occured while applying filter on mjenica");
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }

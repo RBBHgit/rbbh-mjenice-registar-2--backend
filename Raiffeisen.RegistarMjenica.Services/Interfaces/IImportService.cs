@@ -4,5 +4,5 @@ namespace Raiffeisen.RegistarMjenica.Api.Services.Interfaces;
 
 public interface IImportService
 {
-    Task<int> ImportFromExcel(IBrowserFile file);
+    Task<int> ImportFromExcel(Stream fileStream);
 }

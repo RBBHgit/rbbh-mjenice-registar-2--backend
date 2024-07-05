@@ -49,7 +49,7 @@ public static class IServiceCollectionExtensions
             .AddSingleton<IExportService, ExportService>()
             .AddTransient<IMjenicaJobService, MjenicaJobService>()
             .AddScoped<IMjenicaService, MjenicaService>()
-            // .AddScoped<IImportService, ImportService>()
+            .AddScoped<IImportService, ImportService>()
             .AddScoped<IMjenicaExemptionHistoryService, MjenicaExemptionHistoryService>();
     }
 }

@@ -9,8 +9,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<RBBHApiConfig>(builder.Configuration.GetSection("RBBHApi"));
-
 builder.Services.AddMemoryCache();
 
 builder.Services.Configure<RBBHApiConfig>(builder.Configuration.GetSection("RBBHApi"));
@@ -26,23 +24,9 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-
-var section = builder.Configuration.GetSection("Oidc");
-var oidcConfig = section.Get<OidcConfig>();
-
-
-// builder.Services.AddAuthentication(options =>
-//     {
-//         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-//         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//     })
-//     .AddCookie();
-
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,3 +1,5 @@
+using System.Linq.Dynamic.Core;
+using DataAccess.Responses;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels;
 using Raiffeisen.RegistarMjenica.Api.Services.DataModels.SearchObjects;
 
@@ -9,7 +11,7 @@ public interface IMjenicaService
     Task<MjenicaModel> UpdateAsync(MjenicaModel model, string username);
     Task<MjenicaModel> GetByIdAsync(int id, bool asNoTracking, bool includeHistory = false);
     Task<MjenicaModel> VerifyMjenicaAsync(MjenicaModel mjenicaModel, string loggedInUser);
-    Task<List<MjenicaGridModel>> GetGridAsync(MjenicaSearchObject mjenicaSearch = default);
+    Task<PagedResponse<MjenicaGridModel>> GetGridAsync(MjenicaSearchObject mjenicaSearch = default);
     Task<MjenicaModel> ExemptMjenicaTransactionAsync(MjenicaModel model, string username);
     Task<MjenicaModel> VerifyExemptionMjenicaAsync(MjenicaModel mjenicaModel, string username);
     Task<List<MjenicaCard>> GetClientMjeniceAsync(string customerId);

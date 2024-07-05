@@ -22,17 +22,17 @@ public static class MjenicaExemptionHistoryMapper
     public static List<MjenicaHistoryGridModel> MapFromEntityList(IEnumerable<MjenicaExemptionHistory> entityList)
     {
         return entityList.Select(item => new MjenicaHistoryGridModel
-        {
-            ContractNumber = item.ContractNumber,
-            ExemptedBy = item.ExemptedBy,
-            ExemptionDate = item.ExemptionDate,
-            ExemptionReason = item.ExemptionReason,
-            ExemptionVerifiedBy = item.ExemptionVerifiedBy,
-            ExemptionVerifiedDate = item.ExemptionVerifiedDate,
-            ObtainedOriginalDocuments = item.ObtainedOriginalDocuments,
-            TransferedToContractNumber = item.TransferedToContractNumber,
-            BadgeColor = item.ExemptionReason.ReasonToBackColor()
-        })
+            {
+                ContractNumber = item.ContractNumber,
+                ExemptedBy = item.ExemptedBy,
+                ExemptionDate = item.ExemptionDate,
+                ExemptionReason = item.ExemptionReason,
+                ExemptionVerifiedBy = item.ExemptionVerifiedBy,
+                ExemptionVerifiedDate = item.ExemptionVerifiedDate,
+                ObtainedOriginalDocuments = item.ObtainedOriginalDocuments,
+                TransferedToContractNumber = item.TransferedToContractNumber,
+                BadgeColor = item.ExemptionReason.ReasonToBackColor()
+            })
             .ToList();
     }
 }

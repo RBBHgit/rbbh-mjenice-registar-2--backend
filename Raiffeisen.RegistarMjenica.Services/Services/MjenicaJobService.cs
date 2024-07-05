@@ -44,12 +44,7 @@ public class MjenicaJobService : IMjenicaJobService
             if (numOfMatchingContractNo != numOfRecievedContractNo)
                 return new MjenicaJobResult(logId, StatusCodes.Status500InternalServerError, "Failed",
                     $"Broj poslanih zapisa {statusBatch.Count} i broj pronađenih zapisa {numOfFound} nisu jednaki");
-
-            //if (numOfMatchingContractNo == numOfRecievedContractNo && entityHasAlreadySameStatus)
-            //{
-            //    //ovdje ce se pozvati logging service i id koji vrati metoda za logiranje reinicijalizirati logId
-            //    return new MjenicaJobResult(logId, StatusCodes.Status400BadRequest, "Failed", $"Broj poslanih zapisa {statusBatch.Count} i broj pronađenih zapisa {numOfFound}. Ažuriranje nije uspjelo jer jedan od statusa ugovora nema odgovarajući Contract number.");
-            //}
+            
 
             foreach (var entity in matchingEntities)
                 if (statusBatch.TryGetValue(entity.ContractNumber, out var matchingValue))
@@ -78,4 +73,3 @@ public class MjenicaJobService : IMjenicaJobService
         return new MjenicaJobResult(logId, StatusCodes.Status200OK, "Success", "Podaci uspješno ažurirani");
     }
 }
-   
